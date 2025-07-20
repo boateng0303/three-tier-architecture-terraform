@@ -1,7 +1,9 @@
+# Data source for the existing OIDC provider
 data "aws_iam_openid_connect_provider" "github" {
   arn = "arn:aws:iam::954108257389:oidc-provider/token.actions.githubusercontent.com"
 }
 
+# IAM Role for GitHub Actions to assume
 resource "aws_iam_role" "github_terraform_role" {
   name = "GitHubTerraformDeployRole"
 
@@ -14,14 +16,16 @@ resource "aws_iam_role" "github_terraform_role" {
       },
       Action = "sts:AssumeRoleWithWebIdentity",
       Condition = {
-        StringEquals = {
-          "token.actions.githubusercontent.com:sub" = "repo:boateng0303/three-tier-architecture-terraform:ref:refs/heads/main"
+        StringLike = {
+          # Allow pushes from any branch in your repo
+          "token.actions.githubusercontent.com:sub" = "repo:boateng0303/three-tier-architecture-terraform:*"
         }
       }
     }]
   })
 }
 
+# IAM Policy with permissions Terraform needs
 resource "aws_iam_policy" "terraform_policy" {
   name = "TerraformDeployPolicy"
 
@@ -45,6 +49,7 @@ resource "aws_iam_policy" "terraform_policy" {
   })
 }
 
+# Attach policy to role
 resource "aws_iam_role_policy_attachment" "attach_policy" {
   role       = aws_iam_role.github_terraform_role.name
   policy_arn = aws_iam_policy.terraform_policy.arn
