@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "utrains-bucket-backend-three-tier-app"
+    bucket         = "kayla0303"
     encrypt        = true
     key            = "terraform.tfstate"
-    region         = "us-west-2"
-    dynamodb_table = "utrains-dynamodb-backend-three-tier-app"
+    region         = "us-east-1"
+    dynamodb_table = "kay"
   }
 }
