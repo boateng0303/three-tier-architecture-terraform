@@ -71,7 +71,7 @@ module "asg" {
   wait_for_capacity_timeout = var.asg_wait_for_capacity_timeout
   health_check_type         = var.asg_health_check_type
   vpc_zone_identifier       = module.vpc.private_subnets
-  target_group_arns         = module.alb.target_group_arns
+  target_group_arns_lt      = module.alb.target_group_arns
   user_data                 = base64encode(local.user_data)
 
   # Launch template
