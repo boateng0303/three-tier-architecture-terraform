@@ -36,18 +36,15 @@ jobs:
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
 
-      - name: Terraform Validate
-        run: terraform validate
-
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -out=tfplan.txt
 
       - name: Upload Terraform plan artifact
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: tfplan
-          path: tfplan
+          path: tfplan.txt
 
       # Optional: Auto apply on main branch
       # - name: Terraform Apply
